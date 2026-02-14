@@ -12,7 +12,10 @@ import GoalsPage from "./pages/GoalsPage";
 import InsightsPage from "./pages/InsightsPage";
 import SettingsPage from "./pages/SettingsPage";
 import DashboardLayout from "./components/DashboardLayout";
+import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
+
+import { ThemeProvider } from "@/components/theme-provider";
 
 const queryClient = new QueryClient();
 
@@ -21,25 +24,28 @@ const DashboardRoute = ({ children }: { children: React.ReactNode }) => (
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<DashboardRoute><DashboardHome /></DashboardRoute>} />
-          <Route path="/dashboard/transactions" element={<DashboardRoute><TransactionsPage /></DashboardRoute>} />
-          <Route path="/dashboard/investments" element={<DashboardRoute><InvestmentsPage /></DashboardRoute>} />
-          <Route path="/dashboard/tax" element={<DashboardRoute><TaxPlannerPage /></DashboardRoute>} />
-          <Route path="/dashboard/goals" element={<DashboardRoute><GoalsPage /></DashboardRoute>} />
-          <Route path="/dashboard/insights" element={<DashboardRoute><InsightsPage /></DashboardRoute>} />
-          <Route path="/dashboard/settings" element={<DashboardRoute><SettingsPage /></DashboardRoute>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/dashboard" element={<DashboardRoute><DashboardHome /></DashboardRoute>} />
+            <Route path="/dashboard/transactions" element={<DashboardRoute><TransactionsPage /></DashboardRoute>} />
+            <Route path="/dashboard/investments" element={<DashboardRoute><InvestmentsPage /></DashboardRoute>} />
+            <Route path="/dashboard/tax" element={<DashboardRoute><TaxPlannerPage /></DashboardRoute>} />
+            <Route path="/dashboard/goals" element={<DashboardRoute><GoalsPage /></DashboardRoute>} />
+            <Route path="/dashboard/insights" element={<DashboardRoute><InsightsPage /></DashboardRoute>} />
+            <Route path="/dashboard/settings" element={<DashboardRoute><SettingsPage /></DashboardRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
 );
 
 export default App;

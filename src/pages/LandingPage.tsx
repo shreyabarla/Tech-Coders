@@ -3,6 +3,8 @@ import { ArrowRight, BarChart3, Shield, Zap, TrendingUp, PieChart, Calculator } 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
+import { ModeToggle } from "@/components/mode-toggle";
+
 const features = [
   {
     icon: BarChart3,
@@ -68,13 +70,17 @@ const LandingPage = () => {
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <a href="#stats" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
-            <Link to="/dashboard">
+            <ModeToggle />
+            <Link to="/auth">
               <Button size="sm">Launch App <ArrowRight className="ml-1 w-4 h-4" /></Button>
             </Link>
           </div>
-          <Link to="/dashboard" className="md:hidden">
-            <Button size="sm">Launch App</Button>
-          </Link>
+          <div className="flex items-center gap-4 md:hidden">
+            <ModeToggle />
+            <Link to="/auth">
+              <Button size="sm">Launch App</Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -105,7 +111,7 @@ const LandingPage = () => {
               Track expenses, manage investments, plan taxes, and achieve financial goals — all in one intelligent platform built for modern India.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/dashboard">
+              <Link to="/auth">
                 <Button size="lg" className="text-base px-8 h-12">
                   Get Started Free <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
@@ -201,7 +207,7 @@ const LandingPage = () => {
               <p className="text-primary-foreground/70 text-lg mb-8 max-w-xl mx-auto">
                 Join thousands of users who are already making smarter financial decisions with FinVault.
               </p>
-              <Link to="/dashboard">
+              <Link to="/auth">
                 <Button size="lg" className="text-base px-10 h-12">
                   Start For Free <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>

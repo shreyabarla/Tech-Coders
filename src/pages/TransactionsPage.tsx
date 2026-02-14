@@ -4,20 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-const allTransactions = [
-  { id: 1, name: "Salary Credit", amount: 98000, type: "income", category: "Salary", date: "2026-02-01", account: "HDFC" },
-  { id: 2, name: "Rent Payment", amount: -25000, type: "expense", category: "Housing", date: "2026-02-02", account: "HDFC" },
-  { id: 3, name: "Swiggy Order", amount: -580, type: "expense", category: "Food", date: "2026-02-03", account: "ICICI" },
-  { id: 4, name: "Freelance - UI Design", amount: 15000, type: "income", category: "Freelance", date: "2026-02-04", account: "HDFC" },
-  { id: 5, name: "Electricity Bill", amount: -2800, type: "expense", category: "Utilities", date: "2026-02-05", account: "SBI" },
-  { id: 6, name: "Amazon Shopping", amount: -4500, type: "expense", category: "Shopping", date: "2026-02-06", account: "ICICI" },
-  { id: 7, name: "Dividend - HDFC Bank", amount: 3200, type: "income", category: "Investment", date: "2026-02-07", account: "Zerodha" },
-  { id: 8, name: "Gym Membership", amount: -2500, type: "expense", category: "Health", date: "2026-02-08", account: "HDFC" },
-  { id: 9, name: "Netflix Subscription", amount: -649, type: "expense", category: "Entertainment", date: "2026-02-09", account: "ICICI" },
-  { id: 10, name: "Uber Ride", amount: -350, type: "expense", category: "Transport", date: "2026-02-10", account: "SBI" },
-  { id: 11, name: "Interest Earned", amount: 1200, type: "income", category: "Interest", date: "2026-02-11", account: "SBI" },
-  { id: 12, name: "Medical Checkup", amount: -3500, type: "expense", category: "Health", date: "2026-02-12", account: "HDFC" },
-];
+const allTransactions: { id: number; name: string; amount: number; type: "income" | "expense"; category: string; date: string; account: string }[] = [];
 
 const container = {
   hidden: { opacity: 0 },

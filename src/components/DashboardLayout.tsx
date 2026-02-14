@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const navItems = [
   { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -99,6 +100,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <ModeToggle />
             <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-semibold text-primary">
               AK
             </div>

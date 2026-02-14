@@ -4,34 +4,15 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid,
 } from "recharts";
 
-const holdings = [
-  { name: "HDFC Bank", type: "Stock", invested: 150000, current: 185000, change: 23.3 },
-  { name: "Nifty 50 Index Fund", type: "Mutual Fund", invested: 200000, current: 238000, change: 19.0 },
-  { name: "Bitcoin", type: "Crypto", invested: 50000, current: 42000, change: -16.0 },
-  { name: "Reliance Industries", type: "Stock", invested: 120000, current: 142000, change: 18.3 },
-  { name: "SBI Bluechip Fund", type: "Mutual Fund", invested: 100000, current: 118000, change: 18.0 },
-  { name: "Ethereum", type: "Crypto", invested: 30000, current: 35000, change: 16.7 },
-  { name: "Infosys", type: "Stock", invested: 80000, current: 72000, change: -10.0 },
-];
+const holdings: { name: string; type: string; invested: number; current: number; change: number }[] = [];
 
-const allocation = [
-  { name: "Stocks", value: 399000, color: "hsl(199, 89%, 48%)" },
-  { name: "Mutual Funds", value: 356000, color: "hsl(158, 64%, 52%)" },
-  { name: "Crypto", value: 77000, color: "hsl(262, 83%, 58%)" },
-];
+const allocation: { name: string; value: number; color: string }[] = [];
 
-const portfolioHistory = [
-  { month: "Sep", value: 680000 },
-  { month: "Oct", value: 710000 },
-  { month: "Nov", value: 695000 },
-  { month: "Dec", value: 750000 },
-  { month: "Jan", value: 790000 },
-  { month: "Feb", value: 832000 },
-];
+const portfolioHistory: { month: string; value: number }[] = [];
 
 const totalInvested = holdings.reduce((s, h) => s + h.invested, 0);
 const totalCurrent = holdings.reduce((s, h) => s + h.current, 0);
-const totalReturn = ((totalCurrent - totalInvested) / totalInvested * 100).toFixed(1);
+const totalReturn = totalInvested > 0 ? ((totalCurrent - totalInvested) / totalInvested * 100).toFixed(1) : "0.0";
 
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } };
 const item = { hidden: { opacity: 0, y: 15 }, show: { opacity: 1, y: 0 } };

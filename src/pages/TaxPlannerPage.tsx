@@ -6,27 +6,11 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 
-const regimeComparison = [
-  { slab: "0-3L", old: 0, new: 0 },
-  { slab: "3-6L", old: 25000, new: 15000 },
-  { slab: "6-9L", old: 65000, new: 30000 },
-  { slab: "9-12L", old: 115000, new: 60000 },
-  { slab: "12-15L", old: 175000, new: 100000 },
-];
+const regimeComparison: { slab: string; old: number; new: number }[] = [];
 
-const deductions = [
-  { section: "80C", description: "PPF, ELSS, LIC, EPF", limit: 150000, used: 135000 },
-  { section: "80D", description: "Health Insurance Premium", limit: 50000, used: 32000 },
-  { section: "HRA", description: "House Rent Allowance", limit: 180000, used: 180000 },
-  { section: "80CCD(1B)", description: "NPS Additional", limit: 50000, used: 50000 },
-  { section: "24(b)", description: "Home Loan Interest", limit: 200000, used: 0 },
-];
+const deductions: { section: string; description: string; limit: number; used: number }[] = [];
 
-const taxSuggestions = [
-  { title: "Invest in ELSS Funds", savings: "₹46,800", description: "You can save up to ₹46,800 in taxes by investing ₹1.5L in ELSS mutual funds under Section 80C." },
-  { title: "NPS Contribution", savings: "₹15,600", description: "Additional ₹50,000 deduction under 80CCD(1B) by investing in National Pension System." },
-  { title: "Health Insurance", savings: "₹5,616", description: "Get ₹18,000 more deduction under 80D by getting comprehensive health cover for parents." },
-];
+const taxSuggestions: { title: string; savings: string; description: string }[] = [];
 
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } };
 const item = { hidden: { opacity: 0, y: 15 }, show: { opacity: 1, y: 0 } };

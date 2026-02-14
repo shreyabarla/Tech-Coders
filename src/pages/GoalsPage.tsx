@@ -3,13 +3,7 @@ import { Target, Plus, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
-const goals = [
-  { id: 1, name: "Emergency Fund", target: 600000, saved: 420000, icon: "🛡️", monthly: 15000, deadline: "Dec 2026" },
-  { id: 2, name: "Dream Home", target: 3000000, saved: 850000, icon: "🏠", monthly: 35000, deadline: "Mar 2030" },
-  { id: 3, name: "New Car", target: 1200000, saved: 380000, icon: "🚗", monthly: 20000, deadline: "Jun 2028" },
-  { id: 4, name: "Europe Trip", target: 500000, saved: 175000, icon: "✈️", monthly: 12000, deadline: "Sep 2027" },
-  { id: 5, name: "Retirement Corpus", target: 50000000, saved: 2800000, icon: "🌴", monthly: 50000, deadline: "Jan 2055" },
-];
+const goals: { id: number; name: string; target: number; saved: number; icon: string; monthly: number; deadline: string }[] = [];
 
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } };
 const item = { hidden: { opacity: 0, y: 15 }, show: { opacity: 1, y: 0 } };
@@ -39,7 +33,7 @@ const GoalsPage = () => {
         </div>
         <div className="glass-card p-5">
           <p className="stat-label">Overall Progress</p>
-          <p className="stat-value gradient-text">{((totalSaved / totalTarget) * 100).toFixed(1)}%</p>
+          <p className="stat-value gradient-text">{totalTarget > 0 ? ((totalSaved / totalTarget) * 100).toFixed(1) : "0.0"}%</p>
         </div>
       </motion.div>
 

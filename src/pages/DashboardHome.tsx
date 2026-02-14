@@ -22,47 +22,19 @@ import {
   Bar,
 } from "recharts";
 
-const monthlyData = [
-  { month: "Jul", income: 85000, expenses: 52000 },
-  { month: "Aug", income: 92000, expenses: 58000 },
-  { month: "Sep", income: 88000, expenses: 49000 },
-  { month: "Oct", income: 95000, expenses: 61000 },
-  { month: "Nov", income: 102000, expenses: 55000 },
-  { month: "Dec", income: 110000, expenses: 68000 },
-  { month: "Jan", income: 98000, expenses: 54000 },
-];
+const monthlyData: { month: string; income: number; expenses: number }[] = [];
 
-const expenseCategories = [
-  { name: "Housing", value: 25000, color: "hsl(199, 89%, 48%)" },
-  { name: "Food", value: 12000, color: "hsl(158, 64%, 52%)" },
-  { name: "Transport", value: 8000, color: "hsl(262, 83%, 58%)" },
-  { name: "Shopping", value: 6000, color: "hsl(38, 92%, 50%)" },
-  { name: "Others", value: 3000, color: "hsl(0, 84%, 60%)" },
-];
+const expenseCategories: { name: string; value: number; color: string }[] = [];
 
-const weeklySpending = [
-  { day: "Mon", amount: 2200 },
-  { day: "Tue", amount: 1800 },
-  { day: "Wed", amount: 3100 },
-  { day: "Thu", amount: 1500 },
-  { day: "Fri", amount: 4200 },
-  { day: "Sat", amount: 3800 },
-  { day: "Sun", amount: 2400 },
-];
+const weeklySpending: { day: string; amount: number }[] = [];
 
-const recentTransactions = [
-  { id: 1, name: "Salary Credit", amount: 98000, type: "income", category: "Salary", date: "Feb 1" },
-  { id: 2, name: "Rent Payment", amount: -25000, type: "expense", category: "Housing", date: "Feb 2" },
-  { id: 3, name: "Grocery Store", amount: -3200, type: "expense", category: "Food", date: "Feb 5" },
-  { id: 4, name: "Freelance Project", amount: 15000, type: "income", category: "Freelance", date: "Feb 7" },
-  { id: 5, name: "Electricity Bill", amount: -2800, type: "expense", category: "Utilities", date: "Feb 8" },
-];
+const recentTransactions: { id: number; name: string; amount: number; type: "income" | "expense"; category: string; date: string }[] = [];
 
-const statCards = [
-  { title: "Total Balance", value: "₹4,82,350", change: "+12.5%", up: true, icon: Wallet, color: "primary" },
-  { title: "Monthly Income", value: "₹1,13,000", change: "+8.2%", up: true, icon: TrendingUp, color: "accent" },
-  { title: "Monthly Expenses", value: "₹54,000", change: "-3.1%", up: false, icon: TrendingDown, color: "warning" },
-  { title: "Savings Rate", value: "52.2%", change: "+5.4%", up: true, icon: PiggyBank, color: "success" },
+const statCards: { title: string; value: string; change: string; up: boolean; icon: any; color: string }[] = [
+  { title: "Total Balance", value: "₹0", change: "0%", up: true, icon: Wallet, color: "primary" },
+  { title: "Monthly Income", value: "₹0", change: "0%", up: true, icon: TrendingUp, color: "accent" },
+  { title: "Monthly Expenses", value: "₹0", change: "0%", up: false, icon: TrendingDown, color: "warning" },
+  { title: "Savings Rate", value: "0%", change: "0%", up: true, icon: PiggyBank, color: "success" },
 ];
 
 const container = {

@@ -4,53 +4,11 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
 
-const spendingPrediction = [
-  { month: "Oct", actual: 52000, predicted: null },
-  { month: "Nov", actual: 55000, predicted: null },
-  { month: "Dec", actual: 68000, predicted: null },
-  { month: "Jan", actual: 54000, predicted: null },
-  { month: "Feb", actual: 48000, predicted: 51000 },
-  { month: "Mar", actual: null, predicted: 53000 },
-  { month: "Apr", actual: null, predicted: 56000 },
-];
+const spendingPrediction: { month: string; actual: number | null; predicted: number | null }[] = [];
 
-const insights = [
-  {
-    type: "alert",
-    icon: AlertTriangle,
-    title: "Overspending on Food",
-    description: "Your food expenses are 32% higher than last month. Consider meal planning to reduce costs.",
-    color: "warning",
-  },
-  {
-    type: "tip",
-    icon: TrendingUp,
-    title: "Investment Opportunity",
-    description: "Your savings rate is 52%. Consider allocating an extra ₹10,000/month to SIP for higher returns.",
-    color: "accent",
-  },
-  {
-    type: "tip",
-    icon: TrendingDown,
-    title: "Subscription Audit",
-    description: "You have 5 active subscriptions totaling ₹3,200/month. 2 haven't been used in 30 days.",
-    color: "primary",
-  },
-  {
-    type: "alert",
-    icon: Brain,
-    title: "Budget Optimization",
-    description: "Redirecting ₹5,000 from shopping to your Emergency Fund goal would help you reach it 3 months sooner.",
-    color: "accent",
-  },
-];
+const insights: { type: "alert" | "tip"; icon: any; title: string; description: string; color: string }[] = [];
 
-const patterns = [
-  { category: "Most spent", value: "Housing (₹25,000)", trend: "stable" },
-  { category: "Fastest growing", value: "Food (+32%)", trend: "up" },
-  { category: "Biggest saving", value: "Transport (-18%)", trend: "down" },
-  { category: "Average daily", value: "₹1,800/day", trend: "stable" },
-];
+const patterns: { category: string; value: string; trend: string }[] = [];
 
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } };
 const item = { hidden: { opacity: 0, y: 15 }, show: { opacity: 1, y: 0 } };
