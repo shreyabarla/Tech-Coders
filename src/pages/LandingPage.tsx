@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, BarChart3, Shield, Zap, TrendingUp, PieChart, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
 import { ModeToggle } from "@/components/mode-toggle";
 
 const features = [
@@ -58,6 +57,7 @@ const item = {
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50 backdrop-blur-xl">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
@@ -65,16 +65,20 @@ const LandingPage = () => {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold">FinVault</span>
+            <span className="text-lg font-bold text-foreground">FinVault</span>
           </Link>
+
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <a href="#stats" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
             <ModeToggle />
             <Link to="/auth">
-              <Button size="sm">Launch App <ArrowRight className="ml-1 w-4 h-4" /></Button>
+              <Button size="sm">
+                Launch App <ArrowRight className="ml-1 w-4 h-4" />
+              </Button>
             </Link>
           </div>
+
           <div className="flex items-center gap-4 md:hidden">
             <ModeToggle />
             <Link to="/auth">
@@ -103,13 +107,17 @@ const LandingPage = () => {
               <Zap className="w-4 h-4" />
               AI-Powered Financial Intelligence
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary-foreground mb-6 leading-tight">
+
+            {/* ✅ FIXED COLORS */}
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6 leading-tight">
               Your Finances,{" "}
               <span className="gradient-text">Reimagined</span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto leading-relaxed">
+
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               Track expenses, manage investments, plan taxes, and achieve financial goals — all in one intelligent platform built for modern India.
             </p>
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/auth">
                 <Button size="lg" className="text-base px-8 h-12">
@@ -117,7 +125,11 @@ const LandingPage = () => {
                 </Button>
               </Link>
               <a href="#features">
-                <Button variant="outline" size="lg" className="text-base px-8 h-12 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-base px-8 h-12"
+                >
                   Explore Features
                 </Button>
               </a>
@@ -139,7 +151,7 @@ const LandingPage = () => {
             {stats.map((stat) => (
               <motion.div key={stat.label} variants={item} className="text-center">
                 <div className="stat-value gradient-text">{stat.value}</div>
-                <div className="stat-label mt-1">{stat.label}</div>
+                <div className="stat-label mt-1 text-muted-foreground">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -155,7 +167,7 @@ const LandingPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Everything You Need to{" "}
               <span className="gradient-text">Master Your Money</span>
             </h2>
@@ -180,8 +192,12 @@ const LandingPage = () => {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -198,13 +214,12 @@ const LandingPage = () => {
             className="relative rounded-2xl overflow-hidden p-12 md:p-16 text-center"
           >
             <div className="absolute inset-0 bg-[var(--gradient-hero)]" />
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-accent/20 blur-3xl" />
             <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+              {/* ✅ FIXED COLORS */}
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Ready to Take Control?
               </h2>
-              <p className="text-primary-foreground/70 text-lg mb-8 max-w-xl mx-auto">
+              <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
                 Join thousands of users who are already making smarter financial decisions with FinVault.
               </p>
               <Link to="/auth">
