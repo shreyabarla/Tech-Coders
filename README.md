@@ -163,4 +163,4 @@ The backend exposes several RESTful endpoints. Here are a few key ones:
 
 ---
 
-Built with ❤️ by [Shreya Barla and Team]
+Built  by [Shreya Barla and Team]
