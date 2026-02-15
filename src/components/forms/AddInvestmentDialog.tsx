@@ -84,14 +84,14 @@ export function AddInvestmentDialog({ open, onOpenChange, onSuccess }: AddInvest
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Add Investment</DialogTitle>
                     <DialogDescription>
                         Add a new investment to your portfolio.
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pr-4">
                     <div>
                         <Label htmlFor="name">Investment Name</Label>
                         <Input
