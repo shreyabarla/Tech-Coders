@@ -59,24 +59,70 @@ const AuthPage = () => {
 
     const onSignIn = async (data: SignInValues) => {
         setIsLoading(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setIsLoading(false);
-        toast.success("Welcome back!", {
-            description: "You have successfully signed in.",
-        });
-        navigate("/dashboard");
+        try {
+            const response = await fetch("http://localhost:5000/api/auth/signin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to sign in");
+            }
+
+            // Store token and user data
+            localStorage.setItem("token", result.token);
+            localStorage.setItem("user", JSON.stringify(result.user));
+
+            toast.success("Welcome back!", {
+                description: "You have successfully signed in.",
+            });
+            navigate("/dashboard");
+        } catch (error: any) {
+            toast.error("Sign in failed", {
+                description: error.message,
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const onSignUp = async (data: SignUpValues) => {
         setIsLoading(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setIsLoading(false);
-        toast.success("Account created!", {
-            description: "Welcome to FinVault. Let's set up your profile.",
-        });
-        navigate("/dashboard");
+        try {
+            const response = await fetch("http://localhost:5000/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    password: data.password,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to create account");
+            }
+
+            toast.success("Account created!", {
+                description: "Please sign in with your new account.",
+            });
+
+            // Switch to sign in tab
+            // For now, we just let them switch manually or auto-login them?
+            // User requirement: "get a mail... separate data". 
+            // Better to let them sign in to verify.
+        } catch (error: any) {
+            toast.error("Sign up failed", {
+                description: error.message,
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

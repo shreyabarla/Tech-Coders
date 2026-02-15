@@ -69,98 +69,96 @@ const LandingPage = () => {
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <a href="#stats" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
+
             <ModeToggle />
             <Link to="/auth">
-              <Button size="sm">Launch App <ArrowRight className="ml-1 w-4 h-4" /></Button>
+              <Button size="sm">Login <ArrowRight className="ml-1 w-4 h-4" /></Button>
             </Link>
           </div>
           <div className="flex items-center gap-4 md:hidden">
             <ModeToggle />
             <Link to="/auth">
-              <Button size="sm">Launch App</Button>
+              <Button size="sm">Login</Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[var(--gradient-hero)] opacity-90" />
+      <section className="relative pt-32 pb-32 overflow-hidden">
+        {/* Animated Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5 animate-gradient-bg opacity-40" />
+
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-accent/10 blur-3xl" />
+          <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-primary/20 blur-[120px] animate-float delay-100" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] animate-float delay-300" />
+          <div className="absolute top-[40%] left-[20%] w-[300px] h-[300px] rounded-full bg-purple-500/20 blur-[100px] animate-pulse-slow" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto text-center"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto text-center"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
-              <Zap className="w-4 h-4" />
-              AI-Powered Financial Intelligence
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary-foreground mb-6 leading-tight">
-              Your Finances,{" "}
-              <span className="gradient-text">Reimagined</span>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-8 hover:bg-primary/20 transition-colors cursor-default"
+            >
+              <Zap className="w-4 h-4 fill-current" />
+              <span>Next-Gen Financial Intelligence</span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-8 leading-tight drop-shadow-sm">
+              Master Your Money <br />
+              <span className="gradient-text">With AI Precision</span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Track expenses, manage investments, plan taxes, and achieve financial goals — all in one intelligent platform built for modern India.
+
+            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+              Experience the future of personal finance. Intelligent tracking, predictive insights, and automated planning—all in one beautiful dashboard.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+            <motion.div
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
               <Link to="/auth">
-                <Button size="lg" className="text-base px-8 h-12">
+                <Button size="lg" className="text-lg px-8 h-14 rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-105">
                   Get Started Free <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <a href="#features">
-                <Button variant="outline" size="lg" className="text-base px-8 h-12 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
+                <Button variant="outline" size="lg" className="text-lg px-8 h-14 rounded-full border-2 hover:bg-secondary/50 backdrop-blur-sm transition-all duration-300">
                   Explore Features
                 </Button>
               </a>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section id="stats" className="py-16 border-b border-border">
-        <div className="container mx-auto px-4">
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
-          >
-            {stats.map((stat) => (
-              <motion.div key={stat.label} variants={item} className="text-center">
-                <div className="stat-value gradient-text">{stat.value}</div>
-                <div className="stat-label mt-1">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* Features */}
-      <section id="features" className="py-24">
-        <div className="container mx-auto px-4">
+      <section id="features" className="py-32 relative">
+        <div className="absolute inset-0 bg-secondary/30 skew-y-3 transform origin-top-left z-0" />
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Everything You Need to{" "}
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
+              Everything You Need to <br />
               <span className="gradient-text">Master Your Money</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              A comprehensive suite of tools designed to give you complete control over your financial life.
+            <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
+              A comprehensive suite of professional-grade tools designed to give you complete control over your financial life.
             </p>
           </motion.div>
 
@@ -169,19 +167,22 @@ const LandingPage = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {features.map((feature) => (
+            {features.map((feature, idx) => (
               <motion.div
                 key={feature.title}
                 variants={item}
-                className="glass-card-hover p-6"
+                className="glass-card-hover p-8 relative overflow-hidden group"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/10 to-accent/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-150 duration-500" />
+
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                  <feature.icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+
+                <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
+                <p className="text-muted-foreground text-base leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -189,26 +190,30 @@ const LandingPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24">
+      <section className="py-32">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden p-12 md:p-16 text-center"
+            className="relative rounded-3xl overflow-hidden p-12 md:p-24 text-center border border-primary/20 shadow-2xl"
           >
-            <div className="absolute inset-0 bg-[var(--gradient-hero)]" />
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-accent/20 blur-3xl" />
-            <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-md z-0" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 z-0" />
+
+            {/* Animated Background Blobs */}
+            <div className="absolute -top-[50%] -left-[20%] w-[600px] h-[600px] rounded-full bg-primary/20 blur-[120px] animate-float" />
+            <div className="absolute -bottom-[50%] -right-[20%] w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] animate-float delay-200" />
+
+            <div className="relative z-10 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6 tracking-tight">
                 Ready to Take Control?
               </h2>
-              <p className="text-primary-foreground/70 text-lg mb-8 max-w-xl mx-auto">
-                Join thousands of users who are already making smarter financial decisions with FinVault.
+              <p className="text-muted-foreground text-xl mb-10 leading-relaxed">
+                Join thousands of users who are already making smarter, data-driven financial decisions with FinVault.
               </p>
               <Link to="/auth">
-                <Button size="lg" className="text-base px-10 h-12">
+                <Button size="lg" className="text-lg px-12 h-16 rounded-full shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 hover:scale-105 font-bold">
                   Start For Free <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
@@ -218,13 +223,13 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-12">
+      <footer className="border-t border-border/40 py-12 bg-secondary/20">
         <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 text-primary-foreground" />
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+              <BarChart3 className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-foreground">FinVault</span>
+            <span className="font-bold text-lg text-foreground tracking-tight">FinVault</span>
           </div>
           <p>© 2026 FinVault. Your finances, reimagined.</p>
         </div>

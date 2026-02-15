@@ -6,7 +6,10 @@ import {
   PiggyBank,
   ArrowUpRight,
   ArrowDownRight,
+  Plus,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AddTransactionDialog } from "@/components/forms/AddTransactionDialog";
 import {
   AreaChart,
   Area,
@@ -28,14 +31,16 @@ const expenseCategories: { name: string; value: number; color: string }[] = [];
 
 const weeklySpending: { day: string; amount: number }[] = [];
 
-const recentTransactions: { id: number; name: string; amount: number; type: "income" | "expense"; category: string; date: string }[] = [];
+import { useEffect, useState } from "react";
 
-const statCards: { title: string; value: string; change: string; up: boolean; icon: any; color: string }[] = [
-  { title: "Total Balance", value: "₹0", change: "0%", up: true, icon: Wallet, color: "primary" },
-  { title: "Monthly Income", value: "₹0", change: "0%", up: true, icon: TrendingUp, color: "accent" },
-  { title: "Monthly Expenses", value: "₹0", change: "0%", up: false, icon: TrendingDown, color: "warning" },
-  { title: "Savings Rate", value: "0%", change: "0%", up: true, icon: PiggyBank, color: "success" },
-];
+interface Transaction {
+  id: number;
+  name: string;
+  amount: number;
+  type: "income" | "expense";
+  category: string;
+  date: string;
+}
 
 const container = {
   hidden: { opacity: 0 },
@@ -47,11 +52,68 @@ const item = {
 };
 
 const DashboardHome = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const fetchTransactions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await fetch("http://localhost:5000/api/transactions", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const mappedData = data.map((tx: any) => ({
+          id: tx.id,
+          name: tx.description || "Transaction",
+          amount: tx.amount,
+          type: tx.type,
+          category: tx.category,
+          date: new Date(tx.date).toLocaleDateString(),
+        }));
+        setTransactions(mappedData.slice(0, 5)); // Show only recent 5
+      }
+    } catch (error) {
+      console.error("Failed to fetch transactions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  const userName = (() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser.name || "User";
+    }
+    return "User";
+  })();
+
+  const statCards = [
+    { title: "Total Balance", value: "₹0", change: "0%", up: true, icon: Wallet, color: "primary" },
+    { title: "Monthly Income", value: "₹0", change: "0%", up: true, icon: TrendingUp, color: "accent" },
+    { title: "Monthly Expenses", value: "₹0", change: "0%", up: false, icon: TrendingDown, color: "warning" },
+    { title: "Savings Rate", value: "0%", change: "0%", up: true, icon: PiggyBank, color: "success" },
+  ];
+
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
-      <motion.div variants={item}>
-        <h1 className="page-title">Dashboard</h1>
-        <p className="text-muted-foreground text-sm mt-1">Welcome back, Arjun. Here's your financial overview.</p>
+      <motion.div variants={item} className="flex items-center justify-between">
+        <div>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="text-muted-foreground text-sm mt-1">Welcome back, {userName}. Here's your financial overview.</p>
+        </div>
+        <Button onClick={() => setDialogOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" /> Add Transaction
+        </Button>
       </motion.div>
 
       {/* Stat Cards */}
@@ -167,29 +229,39 @@ const DashboardHome = () => {
         <motion.div variants={item} className="glass-card p-5">
           <h3 className="section-title mb-4">Recent Transactions</h3>
           <div className="space-y-3">
-            {recentTransactions.map((tx) => (
-              <div key={tx.id} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
-                <div className="flex items-center gap-3">
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${tx.type === "income" ? "bg-accent/10" : "bg-destructive/10"}`}>
-                    {tx.type === "income" ? (
-                      <ArrowUpRight className="w-4 h-4 text-accent" />
-                    ) : (
-                      <ArrowDownRight className="w-4 h-4 text-destructive" />
-                    )}
+            {transactions.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">No recent transactions</p>
+            ) : (
+              transactions.map((tx) => (
+                <div key={tx.id} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${tx.type === "income" ? "bg-accent/10" : "bg-destructive/10"}`}>
+                      {tx.type === "income" ? (
+                        <ArrowUpRight className="w-4 h-4 text-accent" />
+                      ) : (
+                        <ArrowDownRight className="w-4 h-4 text-destructive" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">{tx.name}</p>
+                      <p className="text-xs text-muted-foreground">{tx.category} · {tx.date}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">{tx.name}</p>
-                    <p className="text-xs text-muted-foreground">{tx.category} · {tx.date}</p>
-                  </div>
+                  <span className={`text-sm font-semibold ${tx.type === "income" ? "text-accent" : "text-destructive"}`}>
+                    {tx.type === "income" ? "+" : ""}₹{Math.abs(tx.amount).toLocaleString()}
+                  </span>
                 </div>
-                <span className={`text-sm font-semibold ${tx.type === "income" ? "text-accent" : "text-destructive"}`}>
-                  {tx.type === "income" ? "+" : ""}₹{Math.abs(tx.amount).toLocaleString()}
-                </span>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </motion.div>
       </div>
+
+      <AddTransactionDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSuccess={fetchTransactions}
+      />
     </motion.div>
   );
 };

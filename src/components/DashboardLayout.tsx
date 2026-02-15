@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -12,7 +12,6 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
 
@@ -33,6 +32,22 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userInitials, setUserInitials] = useState("U");
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const name = parsedUser.name || "";
+      const initials = name
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+      setUserInitials(initials || "U");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -47,23 +62,23 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-card border-r border-border flex flex-col transition-transform duration-300",
+          "fixed lg:sticky top-0 left-0 z-50 h-screen w-64 border-r border-border/40 flex flex-col transition-transform duration-300 backdrop-blur-xl bg-background/80 lg:bg-background/50",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="flex items-center justify-between h-16 px-5 border-b border-border">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+        <div className="flex items-center justify-between h-16 px-5 border-b border-border/40">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
               <BarChart3 className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold">FinVault</span>
+            <span className="text-xl font-bold tracking-tight text-foreground">FinVault</span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
           {navItems.map((navItem) => {
             const isActive = location.pathname === navItem.path;
             return (
@@ -73,25 +88,16 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 onClick={() => setSidebarOpen(false)}
                 className={cn("nav-item", isActive && "active")}
               >
-                <navItem.icon className="w-5 h-5" />
+                <navItem.icon className={cn("w-5 h-5", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
                 <span>{navItem.title}</span>
               </Link>
             );
           })}
         </nav>
-
-        <div className="p-4 border-t border-border">
-          <div className="glass-card p-3 text-center">
-            <p className="text-xs text-muted-foreground">Financial Health</p>
-            <p className="text-2xl font-bold gradient-text">82</p>
-            <p className="text-xs text-accent">Good</p>
-          </div>
-        </div>
       </aside>
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-30 h-16 glass-card border-b border-border/50 flex items-center px-4 lg:px-6 backdrop-blur-xl">
+      <div className="flex-1 flex flex-col min-w-0 bg-secondary/5">
+        <header className="sticky top-0 z-30 h-16 border-b border-border/40 flex items-center px-4 lg:px-6 backdrop-blur-xl bg-background/60">
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden mr-3 text-muted-foreground hover:text-foreground"
@@ -99,10 +105,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <ModeToggle />
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-semibold text-primary">
-              AK
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-background">
+              {userInitials}
             </div>
           </div>
         </header>

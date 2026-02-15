@@ -2,9 +2,17 @@ import { motion } from "framer-motion";
 import { Plus, Search, Filter, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { AddTransactionDialog } from "@/components/forms/AddTransactionDialog";
 
-const allTransactions: { id: number; name: string; amount: number; type: "income" | "expense"; category: string; date: string; account: string }[] = [];
+interface Transaction {
+  id: number;
+  name: string;
+  amount: number;
+  type: "income" | "expense";
+  category: string;
+  date: string;
+}
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,17 +24,52 @@ const item = {
 };
 
 const TransactionsPage = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "income" | "expense">("all");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const filtered = allTransactions.filter((tx) => {
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await fetch("http://localhost:5000/api/transactions", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const mappedData = data.map((tx: any) => ({
+          id: tx.id,
+          name: tx.description || "Transaction",
+          amount: tx.amount,
+          type: tx.type,
+          category: tx.category,
+          date: new Date(tx.date).toLocaleDateString(),
+        }));
+        setTransactions(mappedData);
+      }
+    } catch (error) {
+      console.error("Failed to fetch transactions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filtered = transactions.filter((tx) => {
     const matchSearch = tx.name.toLowerCase().includes(search.toLowerCase()) || tx.category.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || tx.type === filter;
     return matchSearch && matchFilter;
   });
 
-  const totalIncome = allTransactions.filter(t => t.type === "income").reduce((s, t) => s + t.amount, 0);
-  const totalExpense = allTransactions.filter(t => t.type === "expense").reduce((s, t) => s + Math.abs(t.amount), 0);
+  const totalIncome = transactions.filter(t => t.type === "income").reduce((s, t) => s + t.amount, 0);
+  const totalExpense = transactions.filter(t => t.type === "expense").reduce((s, t) => s + Math.abs(t.amount), 0);
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
@@ -35,7 +78,9 @@ const TransactionsPage = () => {
           <h1 className="page-title">Transactions</h1>
           <p className="text-muted-foreground text-sm mt-1">Track and manage all your financial transactions.</p>
         </div>
-        <Button><Plus className="w-4 h-4 mr-2" /> Add Transaction</Button>
+        <Button onClick={() => setDialogOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" /> Add Transaction
+        </Button>
       </motion.div>
 
       {/* Summary cards */}
@@ -72,23 +117,35 @@ const TransactionsPage = () => {
 
       {/* Transaction List */}
       <motion.div variants={item} className="glass-card divide-y divide-border/50">
-        {filtered.map((tx) => (
-          <motion.div key={tx.id} variants={item} className="flex items-center justify-between p-4 hover:bg-secondary/30 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.type === "income" ? "bg-accent/10" : "bg-destructive/10"}`}>
-                {tx.type === "income" ? <ArrowUpRight className="w-5 h-5 text-accent" /> : <ArrowDownRight className="w-5 h-5 text-destructive" />}
+        {loading ? (
+          <div className="p-8 text-center text-muted-foreground">Loading transactions...</div>
+        ) : filtered.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">No transactions found.</div>
+        ) : (
+          filtered.map((tx) => (
+            <motion.div key={tx.id} variants={item} className="flex items-center justify-between p-4 hover:bg-secondary/30 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.type === "income" ? "bg-accent/10" : "bg-destructive/10"}`}>
+                  {tx.type === "income" ? <ArrowUpRight className="w-5 h-5 text-accent" /> : <ArrowDownRight className="w-5 h-5 text-destructive" />}
+                </div>
+                <div>
+                  <p className="text-sm font-medium">{tx.name}</p>
+                  <p className="text-xs text-muted-foreground">{tx.category} · {tx.date}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium">{tx.name}</p>
-                <p className="text-xs text-muted-foreground">{tx.category} · {tx.account} · {tx.date}</p>
-              </div>
-            </div>
-            <span className={`text-sm font-semibold ${tx.type === "income" ? "text-accent" : "text-destructive"}`}>
-              {tx.type === "income" ? "+" : "-"}₹{Math.abs(tx.amount).toLocaleString()}
-            </span>
-          </motion.div>
-        ))}
+              <span className={`text-sm font-semibold ${tx.type === "income" ? "text-accent" : "text-destructive"}`}>
+                {tx.type === "income" ? "+" : "-"}₹{Math.abs(tx.amount).toLocaleString()}
+              </span>
+            </motion.div>
+          ))
+        )}
       </motion.div>
+
+      <AddTransactionDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSuccess={fetchTransactions}
+      />
     </motion.div>
   );
 };
